@@ -66,9 +66,6 @@ export const editDuty = async (req: Request, res: Response) => {
   }
 };
 
-import { Request, Response } from "express";
-import { deleteDuty } from "../services/dutyService";
-
 export const removeDuty = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
