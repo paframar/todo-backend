@@ -3,8 +3,8 @@ import express from "express";
 import dutyRoutes from "../routes/dutyRoutes";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { createDuty, deleteDuty } from "../services/dutyService";
 
-// Mock the dutyService module
 jest.mock("../services/dutyService");
 
 const app = express();
@@ -13,10 +13,17 @@ app.use(cors());
 app.use("/api/v1", dutyRoutes);
 
 describe("Duty Routes", () => {
+  let dutyId: string;
+
+  beforeAll(async () => {
+    const createdDuty = await createDuty("Test Duty");
+    console.log("createdDuty ", createdDuty);
+    dutyId = createdDuty.id;
+  });
+
   it("should get all duties", async () => {
     const response = await request(app).get("/api/v1/duties");
     expect(response.status).toBe(200);
-    // Add more assertions based on the expected response
   });
 
   it("should add a new duty", async () => {
@@ -24,7 +31,6 @@ describe("Duty Routes", () => {
       .post("/api/v1/duties")
       .send({ name: "Test Duty" });
     expect(response.status).toBe(201);
-    // Add more assertions based on the expected response
   });
 
   it("should edit a duty", async () => {
@@ -32,12 +38,14 @@ describe("Duty Routes", () => {
       .put("/api/v1/duties")
       .send({ id: "1", name: "Updated Duty" });
     expect(response.status).toBe(200);
-    // Add more assertions based on the expected response
   });
 
   it("should delete a duty", async () => {
-    const response = await request(app).delete("/api/v1/duties/1");
+    const response = await request(app).delete(`/api/v1/duties/${dutyId}`);
     expect(response.status).toBe(200);
-    // Add more assertions based on the expected response
+  });
+
+  afterAll(async () => {
+    await deleteDuty(dutyId);
   });
 });
