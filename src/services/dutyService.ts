@@ -7,11 +7,17 @@ export const getAllDuties = async (): Promise<Duty[]> => {
 };
 
 export const createDuty = async (name: string): Promise<Duty> => {
-  const result = await pool.query(
-    "INSERT INTO duties (name) VALUES ($1) RETURNING *",
-    [name]
-  );
-  return result.rows[0];
+  try {
+    const result = await pool.query(
+      "INSERT INTO duties (name) VALUES ($1) RETURNING *",
+      [name]
+    );
+    console.log("return from createDuty:", result.rows[0]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error creating duty:", error);
+    throw error;
+  }
 };
 
 export const updateDuty = async (id: string, name: string): Promise<Duty> => {
