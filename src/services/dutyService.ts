@@ -2,6 +2,7 @@ import pool from "../database";
 import { Duty } from "../models/duty";
 
 export const getAllDuties = async (): Promise<Duty[]> => {
+  console.log("******** entre a getAllDuties *********");
   const result = await pool.query("SELECT * FROM duties ORDER BY id");
   return result.rows;
 };
@@ -12,7 +13,6 @@ export const createDuty = async (name: string): Promise<Duty> => {
       "INSERT INTO duties (name) VALUES ($1) RETURNING *",
       [name]
     );
-    console.log("return from createDuty:", result.rows[0]);
     return result.rows[0];
   } catch (error) {
     console.error("Error creating duty:", error);

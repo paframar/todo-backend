@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { getAllDuties, createDuty, updateDuty } from "../services/dutyService";
+import {
+  getAllDuties,
+  createDuty,
+  updateDuty,
+  deleteDuty,
+} from "../services/dutyService";
 
 export const getDuties = async (req: Request, res: Response) => {
   try {
